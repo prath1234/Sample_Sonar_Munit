@@ -77,7 +77,7 @@
                         <configuration>
                             <coverage>
                                <runCoverage>true</runCoverage>
-            					<failBuild>false</failBuild>
+            					<failBuild>true</failBuild>
             					<requiredApplicationCoverage>100</requiredApplicationCoverage>
             					<requiredResourceCoverage>100</requiredResourceCoverage>
             					<requiredFlowCoverage>100</requiredFlowCoverage>
