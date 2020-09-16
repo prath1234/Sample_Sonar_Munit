@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" 
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" 
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans"	
+	xmlns:core="http://www.mulesoft.org/schema/mule/core"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd	
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	
+	 <munit:config name="munit" doc:name="MUnit configuration"/>
+    
+	<munit:test name="doc-test-exampleFlow2Test1" doc:id="2128c681-2666-42da-a9e5-c2f46de3f496" description="Test">
+		<munit:execution>
+			<set-payload value="#['payload_1']" doc:name="Set Payload" doc:id="2831bd88-04a4-4032-891d-6386bccf4235" />		
+		</munit:execution>
+		<munit:validation>
+			<flow-ref doc:name="Flow Reference" doc:id="a980b330-b93f-435e-b89e-2ec517a24b7b" name="exampleFlow2"/>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="d519c4be-159f-43ae-b18c-a8598b591cb0" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="my_variable" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+
+			</munit-tools:verify-call>
+			
+		</munit:validation>
+	</munit:test>
+	<munit:test name="doc-test-exampleFlow2Test2" doc:id="09f7666d-0731-4d6f-ac49-301333d1bef7" description="Test">
+		<munit:execution>
+			<set-payload value="#['payload_2']" doc:name="Set Payload" doc:id="e5cb5a2b-0f4e-48b4-ba0c-10c92f226d66" />		
+		</munit:execution>
+		<munit:validation>
+			<flow-ref doc:name="Flow Reference" doc:id="ac739ee7-3243-42ed-a409-6ba10559a7f7" name="exampleFlow2"/>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="1db51727-1b47-445c-83c2-5123a1ac0e39" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="my_variable" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+
+			</munit-tools:verify-call>
+			
+		</munit:validation>
+	</munit:test>
+	<munit:test name="new-test-suite2Test" doc:id="5aa398e5-6759-435f-973c-20383dd97deb" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="4d41e693-ded5-437f-80f2-e76f98029a06" processor="http:listener">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Listener" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d18ad99b-134b-480e-b03d-007d55f65e25" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Listener_config" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/" attributeName="path" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="1cdd2702-b085-48b1-8c6a-f66ecde76de9" processor="set-payload">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="#[attributes.queryParams['url_key']]" attributeName="value" />
+					<munit-tools:with-attribute whereValue="Set Original Payload" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<set-payload value="#['payload_2']" doc:name="Set Payload" doc:id="bf8e4323-7358-4e3b-b723-d624b510becb" />
+		</munit:execution>
+		<munit:validation >
+			<flow-ref doc:name="Flow Reference" doc:id="5bbcdaac-ec4e-4108-83c1-720fa8384132" name="exampleFlow"/>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="616be96d-144f-4b70-8e61-aaa059b175b0" processor="set-variable">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="my_variable" attributeName="doc:name" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	
+</mule>

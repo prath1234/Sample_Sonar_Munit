@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+  
+
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="2b8cbe22-fcb1-4bde-b392-dd08cea7de8e" >
+		<http:listener-connection host="0.0.0.0" port="8083" />
+	</http:listener-config>
+	<flow name="exampleFlow">
+        <http:listener doc:name="Listener" doc:id="d18ad99b-134b-480e-b03d-007d55f65e25" config-ref="HTTP_Listener_config" path="/"/>
+		<set-payload value="#[attributes.queryParams['url_key']]" doc:name="Set Original Payload"/>
+
+        <logger level="INFO" doc:name="Logger" doc:id="bf2d0460-7988-4d3f-b0c0-9e3fb5edc84c" message="#[payload]"/>
+		<flow-ref name="exampleFlow2" doc:name="exampleFlow2"/>
+
+
+        <choice doc:name="Choice">
+            <when expression="#[vars.'my_variable'==('var_value_1')]">
+                <set-payload value="response_payload_1" doc:name="Set Response Payload" mimeType="application/json"/>
+            </when>
+            <otherwise>
+                <set-payload value="'response_payload_2'" doc:name="Set Response Payload" mimeType="application/json"/>
+            </otherwise>
+        </choice>
+    </flow>
+	<flow name="exampleFlow2">
+        <choice doc:name="Choice">
+            <when expression="#['payload_1'== payload]">
+            	<logger level="INFO" doc:name="Logger" doc:id="1c2ac0a4-be04-4383-991b-f86cc2d7939a" message="THIS IS EXAMPLE FLOW 1"/>
+                <flow-ref name="exampleSub_Flow1" doc:name="exampleSub_Flow1"/>
+				
+            
+</when>
+            <otherwise>
+            		<logger level="INFO" doc:name="Logger" doc:id="541748a6-f100-40e9-885a-e17f1a136814" message="THIS IS EXAMPLE FLOW 2"/>
+                <flow-ref name="exampleSub_Flow2" doc:name="exampleSub_Flow2"/>
+            </otherwise>
+        </choice>
+	</flow>
+
+    <sub-flow name="exampleSub_Flow1">
+    	<logger level="INFO" doc:name="Logger" doc:id="afc6ca3d-42ef-450d-b1dc-ec2c23a5aaaf" message="SET var_value_1"/>
+        <set-variable variableName="my_variable" value="#['var_value_1']" doc:name="my_variable"/>
+    </sub-flow>
+
+    <sub-flow name="exampleSub_Flow2">
+    	<logger level="INFO" doc:name="Logger" doc:id="642db78e-392e-4156-ae0c-c652fff280dd" message="SET var_value_2"/>
+        <set-variable variableName="my_variable" value="#['var_value_2']" doc:name="my_variable"/>
+    </sub-flow>
+</mule>
